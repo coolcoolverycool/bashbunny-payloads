@@ -16,7 +16,7 @@
 # illwill for BrowserCreds script which gave me the idea for this stuff
 #
 # White Blinking.....Comming up
-# Purple ............Setup
+# Purple ............Waiting
 # Amber Blinking.....Scanning
 # Green..............Finished
 
@@ -66,9 +66,9 @@ Q DELAY 200
 Q ENTER
 
 # Wait for script has finished
-LED R B 200
+LED R B 100
 Q DELAY 4000
-LED R G 200
+LED R G 100
 
 
 # Launch powershell as admin and deletes Run history
