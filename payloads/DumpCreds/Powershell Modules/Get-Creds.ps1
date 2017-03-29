@@ -1,12 +1,5 @@
 ﻿
 
-<<<<<<< .mine
-#_main_ -LOOTDIR "\loot\CredDump" -APPEND "false"
-=======
-
->>>>>>> .theirs
-
-
 #################### MAIN ##########################
 function _main_
 {
@@ -199,4 +192,4 @@ function Get-ChromeCreds() {
 }
 
 
- _main_ -LOOTDIR "\loot\DumpCreds" -APPEND "false"
+ ### _main_ -LOOTDIR "\loot\DumpCreds" -APPEND "false"
