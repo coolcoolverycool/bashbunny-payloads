@@ -35,3 +35,5 @@ None needed.
 | Green              | Finished
 
 ## Discussion
+
+https://forums.hak5.org/index.php?/topic/40582-payload-drumpcreds-20-wo-internet-wo-usb-storage/
