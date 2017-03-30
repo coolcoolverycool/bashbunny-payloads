@@ -24,7 +24,7 @@ None needed.
 
 | LED                | Status                                       |
 | ------------------ | -------------------------------------------- |
-| White              | Wait until drive are installed ( 25s)        |
+| White              | Wait until drivers were installed ( 25s)     |
 | Red Blink Fast     | Impacket not found                           |
 | Red Blink Slow     | Target did not acquire IP address            |
 | Amber Blink Fast   | Initialization                               |

