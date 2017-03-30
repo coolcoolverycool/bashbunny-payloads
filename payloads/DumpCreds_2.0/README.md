@@ -24,15 +24,17 @@ None needed.
 
 | LED                | Status                                       |
 | ------------------ | -------------------------------------------- |
-| Red Blink Fast     | Impacket not found
-| Red Blink Slow     | Target did not acquire IP address
-| Amber Blink Fast   | Initialization
-| Amber              | HID Stage
-| Purple Blink Fast  | Wait for IP coming up
-| Purple Blink Slow  | Wait for Handshake (SMBServer Coming up)
-| Purple             | Powershell scripts running  
-| RED                | Error in Powershell Scripts
-| Green              | Finished
+| White              | Wait until drive are installed ( 25s)        |
+| Red Blink Fast     | Impacket not found                           |
+| Red Blink Slow     | Target did not acquire IP address            |
+| Amber Blink Fast   | Initialization                               |
+| Amber              | HID Stage                                    |
+| Purple Blink Fast  | Wait for IP coming up                        |
+| Purple Blink Slow  | Wait for Handshake (SMBServer Coming up)     |
+| Purple / Amber     | Powershell scripts running                   |
+| RED                | Error in Powershell Scripts                  |
+| Green              | Finished                                     |
+| ------------------ | -------------------------------------------- |
 
 ## Discussion
 

