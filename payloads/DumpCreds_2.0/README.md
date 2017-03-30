@@ -12,7 +12,7 @@ Dumps the usernames & plaintext passwords from
  - M1m1Kate3 Dump
  
  without 
- - Use of USB Storage (Because USB STorage ist mostly blocked by USBGuard or DriveLock)
+ - Use of USB Storage (Because USB Storage ist mostly blocked by USBGuard or DriveLock)
  - Without Internet connection (becaus Firewall ContentFilter Blocks the download sites)
  
 
