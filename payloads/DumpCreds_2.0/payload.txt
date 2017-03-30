@@ -50,6 +50,8 @@ ATTACKMODE HID
 
 Q SET_LANGUAGE DE
 
+Q DELAY 5000
+
 # Launch powershell as admin and deletes Run history
 Q GUI r
 Q DELAY 1000
